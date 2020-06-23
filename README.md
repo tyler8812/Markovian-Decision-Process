@@ -2,6 +2,24 @@
 
 ### Table Contents
 
+- [What is MDP?](#heading)
+  * [Before Start](#sub-heading)
+  * [MDP Structure](#sub-heading)
+  * [MDP Structure Example I](#sub-heading)
+    + [State:](#sub-sub-heading)
+    + [Action:](#sub-sub-heading)
+    + [Reward:](#sub-sub-heading)
+    + [Policy:](#sub-sub-heading)
+  * [MDP Structure Example II](#sub-heading)
+    + [State:](#sub-sub-heading)
+    + [Action:](#sub-sub-heading)
+    + [Reward:](#sub-sub-heading)
+    + [Policy:](#sub-sub-heading)
+- [How to solve MDP?](#heading)
+  * [Value Iteration](#sub-heading-1)
+    + [Discounting](#sub-sub-heading-1)
+  * [Policy Iteration](#sub-heading-1)
+- [Conclusion](#heading-2)
 
 
 
@@ -92,20 +110,5 @@ Policy Iteration 其實和 Value Iteration 很類似，但唯一不同的地方�
 
 ## Conclusion
 希望各位看得懂上面 MDP 的整個流程，從一開始建 Model 到解 MDP ，其實也是可以用 Linear Programming 的方式去解 MDP ，但我這裡主要講解如何使用 Dynamic Programming 去解 MDP，這樣會比較好理解跟直觀。 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
