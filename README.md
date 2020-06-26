@@ -141,9 +141,10 @@ Hope everyone knows what's going on from creating the MDP model to solve it. Act
 ## Demo <a name="heading-4"></a>
 Because I played volleyball in my free time, so I did an interesting things in my demo project. I use MDP to do volleyball analysis, and let the coach or player to give the right person or possion to spike. Lets get started. I will introduce the state first, the state represent the teams is winning or losing, just like this, I have five states, losing a lot(score losing under 4), losing a little(score losing 2 ~ 3), middle(-1 ~ +1), winning a little(score winning 2 ~ 3), winning a lot(score winning above 4). For the action, look at the picture below, there will be six actions which represent the position that going to spike.
  ![](https://i.imgur.com/TJ7QOzj.png)
- 
+
 And the most difficult is that to define the reward, the most simple thing is if get a point you get reward +1, if you did not, -1, but that isn't enough, you may not get the score or lose the score right? So, I add some small reward for morale in some situation. Also, it's hard to get the data instead, so I watch each game plays and record it. Finally this is what I get.
 ![](https://i.imgur.com/DTYijpG.png)
+
 As above shows, this game is [China vs Italy - Full Match | FINALS | Women's Volleyball World Grand Prix 2015 ](https://www.youtube.com/watch?v=sa8HAWtPKKs), and I use the MDP to run that in each state you get a best action so that the value of all states could be the largest. And so like in the first line, its shows that when China team is losing a lot, they should probably give the ball to position 6 and can get better result, or like if they're team is winning a liitle bit, they can give the ball to position 
 3 to get the better reward.
 Here is the [sample code](https://github.com/tyler8812/Markovian-Decision-Process/blob/master/mdp.py), but maybe isn't works for you. My suggestion is that if you really want to understand what is MDP, just write a simple project in your daily life, you can probably understand what's going on. 
