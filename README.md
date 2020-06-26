@@ -1,4 +1,4 @@
-# Markovian Decision Process
+# Markov Decision Process
 
 ### Table Contents
 
@@ -19,97 +19,139 @@
   * [Value Iteration](#sub-heading-5)
     + [Discounting](#sub-sub-heading-9)
   * [Policy Iteration](#sub-heading-6)
+  * [Value Iteration vs Policy Iteration](#sub-heading-7)
 - [Conclusion](#heading-3)
+- [Demo](#heading-4)
+- [Reference](#heading-5)
 
 
 <!-- toc -->
 
 ## What is MDP? <a name="heading-1"></a>
 ### Before Start <a name="sub-heading-1"></a>
-假設你現在如下圖所示，你想找一條路徑使你可以拿到右邊那個寶石，但卻不會掉進前面的火堆當中。
-我們很明顯的可以知道說我們只要往右一格然後再依直向著寶石的方向走，就絕對不會掉進火堆當中，且一定可以拿到寶石了。
+If you are the robot under this situation, you would like to find a path to get the diamond, but not to drop into the fire. How will you do? We can obviously find that the robot can just go right and then keep goint straight, then it will get the diamond and not doping into the fire.
 
 ![](https://i.imgur.com/09WGHv1.png)
 
-但如果你和下圖一樣，你根本不知道寶石在哪或是陷阱在哪，你無法去找出一條好的路徑使你完成目標對吧。
+But if you're in this situation, you actually don't know what's going on, you don't know where's the diamond, where's the trap, you can't find a way to reach your goal.
 
 ![](https://i.imgur.com/kfBlqMB.png)
 
-所以我們要來探討 MDP 這個方法，此方法可以讓我們找出一個最好的路徑來完成目標。
+ 
+
+
+
+So, we're going to talk about MDP(Markov Decision Process), and through this method, we can find a best solution or path for us to reach the goal.
 
 ### MDP Structure <a name="sub-heading-2"></a>
-
-首先我們先來看看下面這張圖，我來稍微解釋一下，我們從 Agent 這個地方開始看起，我們可以把他想成是自己或是決策的人，而前面有兩個箭頭指向 Agent，第一條是 state(S~i~)，代表著我現在所在的狀態，第二條則是 reward(R~i~)，代表著我從上一個狀態所得到的獎賞或是懲罰，而從 Agent 也有一條指向 Environment ，這代表著我們做了一個 action (A~i~)，使得我們到達了一個新的狀態，而這個新狀態又會在產生一個 state(S~i~) 和 reward(R~i~) 給 Agent，然後一直重複循環，最後你可以得出一個結論就是當面對不同 State 時，你可以得出一個最好的 Action，使得最後 Reward 最高，此稱為一個 Policy。
-
-聽完上面的解釋是不是還是不太懂呢? 那我這邊舉個範例好了，假設如上圖，你現在處在一個迷宮當中，你所要做的是你要選擇你下一步該往哪走，那這個我們就稱為 action (A~i~)，而你現在所在的位置就可以想成是一個 state(S~i~)，那至於 reward(R~i~) 的部分就像是說你如果走到了死路，你就必須要花更多力氣回到會走過的路，這就可能是懲罰的部分，反之，當你感覺你離終點越來越近了，那你應該就可以得到獎賞。看完這個範例應該有對這個架構有更多的了解對吧，因為在迷宮當中，你每走一步如果都照著這樣的架構去走的話，你說不定真的可以找到最好的方法並走到終點對吧! 那假如迷宮可以用這個方式來完成，那說不定我們也可以把 MDP 實作在日常生活中對吧，像是我有做一個 Project 是在對於排球比賽去做最佳的 Policy 來使得得分效率最高(最後會有介紹)。
+First, I'd like to introduce the structure of the MDP. As following picture shows, first, take a look at the Agent, it can represent to who makes dicision or the robot. And there are two lines point to it, the first line is for state(S~i~), which means the state that your in. The other one is for reward(R~i~), which represent the reward or penalty that you get from the previous state to new state. And there is one more line point out to the environment, this means that the agent do one action(A~i~) and get to a new state, and the agent will get a new state(S~i+1~) and a new reward(R~i+1~), repeat and repeat.
+Finally, you can get some conclusion is that when the agent face to different situation or state, it will find an action, also get a reward from it, and this we called the policy.
 
 ![](https://i.imgur.com/zeejbtZ.png)
 
-**Warning: 但也並非所有情況都可以使用 MDP ， MDP 全名為 Markovian Decision Process ，之所以為 Markovian 正是因為它必須滿足一個重要的條件才可以使用這個方法，那就是每個 State 和 State 之間必須互相獨立，也就是不會影響，因此在可以在每個 State 找到最佳的 Action。**
+Let me give an example here, if you are in a maze, what you are going to do is to find next step right? So, you can go straight, left, right, or back. And this we called the action(A~i~), and where you are standing or position is the state(S~i~). For the reward(R~i~) is something like if you are far away from the end, maybe you get some bad reward. On the contrary, if you are near to the end, you probably get the good reward. So, after looking this example,we probably have a better understand in MDP right? MDP is actually a good method for you to make decision in the daily life, and at the end of the introduction, I will demo a volleyball project that I done before.
+
+**Warning: Not all the situatuion is suitable in MDP. For MDP, "markov" means actions depends only on current state.**
+
+
 
 ### MDP Structure Example I <a name="sub-heading-3"></a>
+As following picture shows, we want to let the car moves as far as it could and also as fast as it could.
 #### State: <a name="sub-sub-heading-1"></a>
-假設你現在開著一輛車，如下圖所示，你的車會有三個狀態，分別代表車子所處的狀態，有正常、稍熱、過熱，當你車子達到過熱這個階段時，你車子就壞了，也就不能繼續駛行了。
+If you are driving a car, and your car will have three states which represents the status of your car. Blue car is cool, red car is warm, and gray car is overheated, when you get to the state overheated, then it's over.
+
 #### Action: <a name="sub-sub-heading-2"></a>
-當車子在不同狀態時，你可以有兩種的 Action ，分別是 Slow 和 Fast ，代表你駛行的速度。
+When your in any state without overheated, you can have two actions, one for diving slow, and the other one for fast.
+
 #### Reward: <a name="sub-sub-heading-3"></a>
-你所選則駛行的速度也影響到你的 Reward 部分，因為你駛的快，你車子可以更快到達目的地，所以當 Action 為 Slow 時， Reward 為 1，但當為 Fast 時， Reward 為 2。
+Just as what I said before, what you choose will affect to your reward. So, when you choose to dirve fast, you can get to the destination faster, you get a reward (+2), but it may get to the state overheated. On the other hand, if you drive slower, you get a smaller reward (+1), but never go to the state overheated.
+
 #### Policy: <a name="sub-sub-heading-4"></a>
-你想讓此車在最有效率的方式下駛行，因此你就要找到一個 Policy 使得在每個 State 有最佳 Action，來得到最高的 Reward。
+So, if you want to let the car move more efficiently, you have to find a best policy so that you get a best reward by an action in any states.
+
 ![](https://i.imgur.com/GWdUVch.png)
 
 ### MDP Structure Example II <a name="sub-heading-4"></a>
-這是第二個 Example ，而我們接下來也會用下列的 Example 去解我們的 MDP。假設你現在處在下圖地圖上，你想要拿到鑽石並避開有火的地方，你的目標是找到每個位置的走法。
+This is the second example. Assume that you're in the place just like below, and the goal is to get the diamond and avoid to get to the fire, and find a direction in each positions or rectangles.
+
 #### State: <a name="sub-sub-heading-5"></a>
-除了不能走的地方、有寶石、和火焰的地方以外，其餘的地方都可以看成一個 State。
+Except the block, the diamond, and the fire, others rectangles can be a state.
+
+
 #### Action: <a name="sub-sub-heading-6"></a>
-Action 當然可以是前後左右，但值得注意的是，有些地方可能沒有 4 種走法，像是 Start 的位置就只能向上或向右。
+Action can absolutely be up, down, left, and reight. But some places may only have one or two direction, just like the starting point.
+
 #### Reward: <a name="sub-sub-heading-7"></a>
-這個 Example 的 Reward 就是寶石+1、火焰-1。
+The reward for this example is if you get the diamond(+1), and get to the fire(-1).
+Also, you can add more advance is that if you walk one more step, you get a -0.1 reward, so that the robot will find the way faster.
+
 #### Policy: <a name="sub-sub-heading-8"></a>
-因此最好的 Policy 就是找到每個位置的最佳 Action 。
+The best policy is to find the best action in every positions or states.
 
 ![](https://i.imgur.com/kh63B4g.png)![](https://i.imgur.com/oifyXOS.png)
 
 
 ## How to solve MDP? <a name="heading-2"></a>
-介紹完了 MDP ，當然就是要開始介紹要怎麼解 MDP 了，以下我們會介紹兩種不同的方式去解 MDP ，當然你可以自己去選擇喜歡的方式，不過對於各種情況的不同，會有較好的方式，以下我都會一一做介紹。
-
-首先在開始之前我們要先知道一件事，請看下圖，藍色三角形代表者一個 state ，而箭頭指出去代表著一個 action ，而綠色圓圈代表著當你決定要走此 Action 後到真的走了之前的一個狀態，為甚麼要有這個狀態呢? 是因為當你決定好走這個 action ，但有可能有其它意外導致跟原本預期的不一樣，那這時可能就會走另一個 action ，這之後會繼續延深，所以現在只要知道說我從 s(state) 走了一個 a(action) 到達了 s'(state) 後，這整個稱為一個 T(s,a,s')(transition) ，並會從這當中取得 R(s,a,s')reward。
+After introducing the MDP structure, we're going to start talking about more and how to solve it. I will talk about two ways for you to solve MDP, of course, you can choose whatever you like. But in different situations, there will be a better ways for it.
+First, before we start, we should know one thing. Take a look at the picture below, the blue triangle represent a state. And the arrow pointed out represent an action, and if you choose the solid line, you will get to a green circle. This is a fake state which means if you decide to take this action to the state before you really do so.
+Why do I say that? That's because you may face some problems after you make the action, then you might not take the action that you choose before. This is much more complexity, but we should know one thing  definitely is that if we start from state s to state s' by taking action a, and this we called a transition T(s,a,s'), also we get a reward R(s,a,s').
 
 ![](https://i.imgur.com/OmMXJy9.png)
 ### Value Iteration <a name="sub-heading-5"></a>
-知道上面的這個流程之後，我們可以給每個 state 一個值，代表此 state 目前的狀態好壞，因為知道這個後我可以推測下一次這個 state 的好壞，就這樣往前推就可以推到很後面去了，這就是 value iteration 的想法。
+The first method I would like to mentioned is Value Iteration.
+After knowing whats going on on the top, we can give a value in every state, so that it can represent all the rewards of this state. Then if we want to calculate the state's value in the future, we have to know the state's value in the past right? So we can try using dynamic programming, this is what value iteration do.
 
 ![](https://i.imgur.com/Rau1Gpf.png)
-那我們來看看下面這個式子，V~k~(s') 代表在 state s' 時的值，V~k+1~(s) 代表在 state s 時的值，再來我們可以列出此式子表示每次 state 在做更新的方式，首先先看 R(s, a, s')，這就是上面所提到的 reward 的部分，因為我們要找出最好的 policy 就是要找出 reward 最好的，因此每次在做 state 值更新時，主要就是根據 reward 去看，那前面 T(s, a, s') 就是 state 和 state 之間的轉移，最後再用 max 去找出當下最好的 action ，這就是一次的 value iteration ，這大概就是 value iteration 的核心架構。
+Let's take a look at this formula, V~k~(s') represent the value of state s' and V~k+1~(s) represent the value of state s in the next iteration, and now we can have this formula to represent the update of value. First, take a look at R(s, a, s'), this is what we discuss on the top, the reward part. Because if we want to find the best policy then the reward should be the highest in each iteration. T(s, a, s') is the transition from state s to state s'. Finally, just take the maximum in every action, you can probably get the best policy in every state in each iteration. Until it converge, you get the best policy.
 
 ![](https://i.imgur.com/EnvsxDw.png)
-接下來的就是要一直去算出每個 state 的值，當你一直往下算之後，你就可以看到很遠的 state 情況了，如下圖所示。
+So, this picture below is same us what we are doing, iterate it until it converge.
+
 
 ![](https://i.imgur.com/yNXgPvX.png)
 #### Discounting <a name="sub-sub-heading-9"></a>
-那其實這樣你可能會發現有問題的產生，那就是我的 reward 會不會一直加一直加到無限大，那這時候我們需要探討到收斂的問題，看看下圖，我們到底該選擇哪一條路線呢? 兩個都是走完可以拿到4個寶石，我該走左邊還右邊呢? 
+Actually, so how can this be converge? The value probably increase in every iteration right? As a result, we have to talk about the discounting. Look the picture below, If you are the robot what will you choose, will you choose the left one to get one diamond in each step, or get four diamonds in the last step. Which way will you choose? 
 
 ![](https://i.imgur.com/Nt8lDPp.png)
-基本上應該是要選擇左邊的會比較好吧，雖然最後都可以拿到同樣數量的寶石，但假設我們只走了三步呢? 或者我們每走一步會消耗一定的體力，所以是不是越早拿到越好? 因此我們可以給越後面拿到的 reward 一個 discount ，向下圖這樣我們把後面的 state 多乘上一個介於 0 到 1 的值，這樣可以保證先得到會比後得到來的好。
+Basically, you will choose left, because they both can get the same number of diamonds, but maybe the robot walk three steps only right? How does it happen? The battery can be dead, or out of energy. So, it is clearly that get the reward faster is greater than future. But, here is another example is if there are five diamonds in the right path but in the last step. This is hard to choose. Therefore, we can give a discount to the future state, like discount equals to 0.9 etc. And we can make sure that now is better than future.
 
 ![](https://i.imgur.com/RQhy4Sc.png)
-那假設是如此的話，我們就要把 value iteration 多乘上一個值在V~K~(s')，使得可以有 discount 的作用，也因此如此，我們可以使得 state 的值可以達到收斂，就不會有 value 越加越大的問題了。
+
+And so for that, we can just add a discount before V~K~(s'), then we can have the effect of what I mentioned above. Also, if you look at the forumla down, it can actually be converge after some iterations.( I will not mentioned the provement here. )
 
 ![](https://i.imgur.com/FFWaYcM.png)
-上述都已經教完 value iteration 的一些架構和觀念了，那接下來我們只要把以下演算法帶入電腦中讓他跑，那基本上就可以得出每個 state 最佳 action 或是說最好的 policy。
-一開始先把每個 state 的 value 設為 0，然後就用 for loop 去一直跑，因為它會收斂，所以不用跑太久 state 的值的變化會越來越小，那底下第一行代表的就是上述所提到的，state 的 value 的更新，第二行則是把當下最好的 action 存起來，因為我們的目標是找到一個最好的 policy 對吧，所以要把每個 state 最好的 action 給記錄起來。 
+This is all about Value Iteration, then we just need to run this algorithm or method in the PC, basically, we can get the best action or best policy.
+
+First, let all the state initial to zero, and then run a loop. In the loop, you just need to do two things, calaulate the maximun reward for every action in each state, and update the value of the state. Just keep doing so until every state is converge. The second line represent the policy, so in each state and each iteration, there will be a best action and be recorded.
 
 ![](https://i.imgur.com/lzy63cy.png)
 ### Policy Iteration <a name="sub-heading-6"></a>
-Policy Iteration 其實和 Value Iteration 很類似，但唯一不同的地方是他除去了 max ，並且它是去給定一個 policy 然後算他的 value ，而下一次它會去算每一個 state 的最佳 action 然後放入下次 policy 當中，這樣一值重複直到當前的 policy 和上次 policy 相同時，就結束，這個方法看似跟 value iteration 很像，但其實它可以比 value iteration 更快收斂。
+Now, we're going to talk about second method to solve MDP. Policy Iteration is similar to Value Iteration, but the only different is that Policy Iteration delete the maximun. How does that works? Policy Iteration will initially gives a policy, and in every iteration, you can change a policy if the value is bigger. So, when you run many times you can get a policy that have the biggest value in every state nad that's the best solution. What's more, actually Policy Iteration can converge more faster than Value Iteration.
 
 ![](https://i.imgur.com/RAQ40qg.png)
 ![](https://i.imgur.com/HnQ6lMm.png)
 
+### Value Iteration vs Policy Iteration <a name="sub-heading-7"></a>
+As we known, Policy Iteration converges more faster than Value Iteration, but in different cases, we still can use Value Iteration. For example, if you have fewer action, it's quite easy to take maximum in every action, so Value Iteration is fine. Contrary, if you have lots of actions or you just get a fair policy, you probably use Policy Iteration will be better.
+
 ## Conclusion <a name="heading-3"></a>
-希望各位看得懂上面 MDP 的整個流程，從一開始建 Model 到解 MDP ，其實也是可以用 Linear Programming 的方式去解 MDP ，但我這裡主要講解如何使用 Dynamic Programming 去解 MDP，這樣會比較好理解跟直觀。 
+Hope everyone knows what's going on from creating the MDP model to solve it. Actually, there are many ways to solve MDP, even the Linear Programming can solves it. But here I just want to talk about using Dynamic Programming to solve it. Because it's easy to understand and more intuitive.
+ 
+ 
+## Demo <a name="heading-4"></a>
+Because I played volleyball in my free time, so I did an interesting things in my demo project. I use MDP to do volleyball analysis, and let the coach or player to give the right person or possion to spike. Lets get started. I will introduce the state first, the state represent the teams is winning or losing, just like this, I have five states, losing a lot(score losing under 4), losing a little(score losing 2 ~ 3), middle(-1 ~ +1), winning a little(score winning 2 ~ 3), winning a lot(score winning above 4). For the action, look at the picture below, there will be six actions which represent the position that going to spike. ![](https://i.imgur.com/TJ7QOzj.png)
+And the most difficult is that to define the reward, the most simple thing is if get a point you get reward +1, if you did not, -1, but that isn't enough, you may not get the score or lose the score right? So, I add some small reward for morale in some situation. Also, it's hard to get the data instead, so I watch each game plays and record it. Finally this is what I get.
+![](https://i.imgur.com/DTYijpG.png)
+As above shows, this game is [China vs Italy - Full Match | FINALS | Women's Volleyball World Grand Prix 2015 ](https://www.youtube.com/watch?v=sa8HAWtPKKs), and I use the MDP to run that in each state you get a best action so that the value of all states could be the largest. And so like in the first line, its shows that when China team is losing a lot, they should probably give the ball to position 6 and can get better result, or like if they're team is winning a liitle bit, they can give the ball to position 
+3 to get the better reward.
+Here is the [sample code](https://github.com/tyler8812/Markovian-Decision-Process/blob/master/mdp.py), but maybe isn't works for you. My suggestion is that if you really want to understand what is MDP, just write a simple project in your daily life, you can probably understand what's going on. 
+
+
+ ## Reference <a name="heading-5"></a>
+[Dan Klein, Pieter Abbeel, John Schulman, Yan (Rocky)
+Duan and Xi (Peter) Chen for CS188 Intro to AI at UC
+Berkeley. ](http://ai.berkeley.edu/)
+[OR Coure in NCKU taught by professor Lee.](http://140.116.86.229/)
 
 
 
