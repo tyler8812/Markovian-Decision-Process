@@ -103,7 +103,7 @@ After knowing whats going on on the top, we can give a value in every state, so 
 
 ![](https://i.imgur.com/Rau1Gpf.png)
 
-Let's take a look at this formula, V~k~(s') represent the value of state s' and V~k+1~(s) represent the value of state s in the next iteration, and now we can have this formula to represent the update of value. First, take a look at R(s, a, s'), this is what we discuss on the top, the reward part. Because if we want to find the best policy then the reward should be the highest in each iteration. T(s, a, s') is the transition from state s to state s'. Finally, just take the maximum in every action, you can probably get the best policy in every state in each iteration. Until it converge, you get the best policy.
+Let's take a look at this formula, V<sub>k</sub>(s') represent the value of state s' and V<sub>k+1</sub>(s) represent the value of state s in the next iteration, and now we can have this formula to represent the update of value. First, take a look at R(s, a, s'), this is what we discuss on the top, the reward part. Because if we want to find the best policy then the reward should be the highest in each iteration. T(s, a, s') is the transition from state s to state s'. Finally, just take the maximum in every action, you can probably get the best policy in every state in each iteration. Until it converge, you get the best policy.
 
 ![](https://i.imgur.com/EnvsxDw.png)
 So, this picture below is same us what we are doing, iterate it until it converge.
