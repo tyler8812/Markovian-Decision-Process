@@ -141,6 +141,7 @@ Hope everyone knows what's going on from creating the MDP model to solve it. Act
  
 ## Demo <a name="heading-4"></a>
 Because I played volleyball in my free time, so I did an interesting things in my demo project. I use MDP to do volleyball analysis, and let the coach or player to give the right person or possion to spike. Lets get started. I will introduce the state first, the state represent the teams is winning or losing, just like this, I have five states, losing a lot(score losing under 4), losing a little(score losing 2 ~ 3), middle(-1 ~ +1), winning a little(score winning 2 ~ 3), winning a lot(score winning above 4). For the action, look at the picture below, there will be six actions which represent the position that going to spike.
+
  ![](https://i.imgur.com/TJ7QOzj.png)
 
 And the most difficult is that to define the reward, the most simple thing is if get a point you get reward +1, if you did not, -1, but that isn't enough, you may not get the score or lose the score right? So, I add some small reward for morale in some situation. Also, it's hard to get the data instead, so I watch each game plays and record it. Finally this is what I get.
