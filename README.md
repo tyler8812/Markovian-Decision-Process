@@ -44,12 +44,12 @@ But if you're in this situation, you actually don't know what's going on, you do
 So, we're going to talk about MDP(Markov Decision Process), and through this method, we can find a best solution or path for us to reach the goal.
 
 ### MDP Structure <a name="sub-heading-2"></a>
-First, I'd like to introduce the structure of the MDP. As following picture shows, first, take a look at the Agent, it can represent to who makes dicision or the robot. And there are two lines point to it, the first line is for state(S~i~), which means the state that your in. The other one is for reward(R~i~), which represent the reward or penalty that you get from the previous state to new state. And there is one more line point out to the environment, this means that the agent do one action(A~i~) and get to a new state, and the agent will get a new state(S~i+1~) and a new reward(R~i+1~), repeat and repeat.
+First, I'd like to introduce the structure of the MDP. As following picture shows, first, take a look at the Agent, it can represent to who makes dicision or the robot. And there are two lines point to it, the first line is for state(S<sub>i</sub>), which means the state that your in. The other one is for reward(R<sub>i</sub>), which represent the reward or penalty that you get from the previous state to new state. And there is one more line point out to the environment, this means that the agent do one action(A<sub>i</sub>) and get to a new state, and the agent will get a new state(S<sub>i+1</sub>) and a new reward(R<sub>i+1</sub>), repeat and repeat.
 Finally, you can get some conclusion is that when the agent face to different situation or state, it will find an action, also get a reward from it, and this we called the policy.
 
 ![](https://i.imgur.com/zeejbtZ.png)
 
-Let me give an example here, if you are in a maze, what you are going to do is to find next step right? So, you can go straight, left, right, or back. And this we called the action(A~i~), and where you are standing or position is the state(S~i~). For the reward(R~i~) is something like if you are far away from the end, maybe you get some bad reward. On the contrary, if you are near to the end, you probably get the good reward. So, after looking this example,we probably have a better understand in MDP right? MDP is actually a good method for you to make decision in the daily life, and at the end of the introduction, I will demo a volleyball project that I done before.
+Let me give an example here, if you are in a maze, what you are going to do is to find next step right? So, you can go straight, left, right, or back. And this we called the action(A<sub>i</sub>), and where you are standing or position is the state(S<sub>i</sub>). For the reward(R<sub>i</sub>) is something like if you are far away from the end, maybe you get some bad reward. On the contrary, if you are near to the end, you probably get the good reward. So, after looking this example,we probably have a better understand in MDP right? MDP is actually a good method for you to make decision in the daily life, and at the end of the introduction, I will demo a volleyball project that I done before.
 
 **Warning: Not all the situatuion is suitable in MDP. For MDP, "markov" means actions depends only on current state.**
 
@@ -118,7 +118,7 @@ Basically, you will choose left, because they both can get the same number of di
 
 ![](https://i.imgur.com/RQhy4Sc.png)
 
-And so for that, we can just add a discount before V~K~(s'), then we can have the effect of what I mentioned above. Also, if you look at the forumla down, it can actually be converge after some iterations.( I will not mentioned the provement here. )
+And so for that, we can just add a discount before V<sub>K</sub>(s'), then we can have the effect of what I mentioned above. Also, if you look at the forumla down, it can actually be converge after some iterations.( I will not mentioned the provement here. )
 
 ![](https://i.imgur.com/FFWaYcM.png)
 This is all about Value Iteration, then we just need to run this algorithm or method in the PC, basically, we can get the best action or best policy.
